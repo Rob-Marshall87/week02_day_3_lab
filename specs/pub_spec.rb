@@ -10,10 +10,13 @@ class TestPub < MiniTest::Test
   def setup
 
     @drink1 = Drink.new("Beer", 4, 2)
+    @drink4 = Drink.new("Beer", 4, 2)
     @drink2 = Drink.new("Wine", 5, 1)
     @drink3 = Drink.new("Cider", 3, 5)
 
-    @drinks = [@drink1, @drink2, @drink3]
+    @drinks = {
+      "Beer" => [@drink1, @drink4], "Wine" => [@drink2], "Cider" => [@drink3]
+    }
 
     @food1 = Food.new("Burger", 4, 2)
     @food2 = Food.new("Chips", 2, 1)
@@ -43,7 +46,7 @@ class TestPub < MiniTest::Test
 
   def test_remove_drink
     @pub1.remove_drink(@drink1)
-    assert_equal(2, @pub1.drinks.length)
+    assert_equal(1, @pub1.drinks[@drink1.name].length)
   end
 
   def test_add_money_to_till
@@ -53,14 +56,14 @@ class TestPub < MiniTest::Test
 
   def test_sell_drink__customer_over_18
     result = @pub1.sell_drink(@drink1, @customer1)
-    assert_equal(2, @pub1.drinks.length)
+    assert_equal(1, @pub1.drinks[@drink1.name].length)
     assert_equal(154, @pub1.how_much_in_till)
     assert_equal(@drink1, result)
   end
 
   def test_sell_drink__customer_under_18
     result = @pub1.sell_drink(@drink1, @customer3)
-    assert_equal(3, @pub1.drinks.length)
+    assert_equal(2, @pub1.drinks[@drink1.name].length)
     assert_equal(150, @pub1.how_much_in_till)
     assert_nil(result)
   end
@@ -70,7 +73,7 @@ class TestPub < MiniTest::Test
     @customer2.buy_drink_from_pub(@pub1, @drink3)
     assert_equal(7, @customer2.alcohol_level)
     result = @pub1.sell_drink(@drink2, @customer2)
-    assert_equal(1, @pub1.drinks.length)
+    assert_equal(1, @pub1.drinks[@drink2.name].length)
     assert_equal(157, @pub1.how_much_in_till)
     assert_nil(result)
   end
@@ -92,6 +95,15 @@ class TestPub < MiniTest::Test
     @pub1.sell_food(@food1)
     assert_equal(1, @pub1.foods.length)
     assert_equal(154, @pub1.how_much_in_till)
+  end
+
+  def test_stock_take
+    result = @pub1.stock_take("Beer")
+    assert_equal(2, result)
+  end
+
+  def test_stock_value
+    assert_equal(16, @pub1.stock_value)
   end
 
 end

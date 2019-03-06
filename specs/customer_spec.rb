@@ -12,10 +12,13 @@ class TestCustomer < MiniTest::Test
     @customer1 = Customer.new("Rob", 100, 31)
 
     @drink1 = Drink.new("Beer", 4, 2)
+    @drink4 = Drink.new("Beer", 4, 2)
     @drink2 = Drink.new("Wine", 5, 1)
     @drink3 = Drink.new("Cider", 3, 5)
 
-    @drinks = [@drink1, @drink2, @drink3]
+    @drinks = {
+      "Beer" => [@drink1, @drink4], "Wine" => [@drink2], "Cider" => [@drink3]
+    }
 
     @food1 = Food.new("Burger", 4, 2)
     @food2 = Food.new("Chips", 2, 1)

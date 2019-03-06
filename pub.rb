@@ -12,7 +12,7 @@ class Pub
   end
 
   def remove_drink(drink)
-    @drinks.delete(drink)
+    @drinks[drink.name].delete(drink)
   end
 
   def add_money_to_till(money)
@@ -37,6 +37,21 @@ class Pub
     add_money_to_till(cost)
     remove_food(food)
     return food
+  end
+
+  def stock_take(drink_name)
+    return @drinks[drink_name].length
+  end
+
+  def stock_value
+    value = 0
+    for shelf_name in @drinks.keys
+      for drink in @drinks[shelf_name]
+        value += drink.price
+
+      end
+    end
+    return value
   end
 
 end
