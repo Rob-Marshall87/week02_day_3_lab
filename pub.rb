@@ -18,10 +18,12 @@ class Pub
     @till += money
   end
 
-  def sell_drink(drink)
-    cost = drink.price
-    add_money_to_till(cost)
-    remove_drink(drink)
-    return cost
+  def sell_drink(drink, customer)
+    if customer.tell_age >= 18 && customer.alcohol_level < 7
+      cost = drink.price
+      add_money_to_till(cost)
+      remove_drink(drink)
+      return drink
+    end
   end
 end
