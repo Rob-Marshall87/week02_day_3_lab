@@ -9,4 +9,13 @@ class Customer
     return @wallet
   end
 
+  def remove_money_from_wallet(money)
+    @wallet -= money
+  end
+
+  def buy_drink_from_pub(pub, drink)
+    cost = pub.sell_drink(drink)
+    remove_money_from_wallet(cost)
+  end
+
 end

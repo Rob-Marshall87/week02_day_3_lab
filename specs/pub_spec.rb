@@ -21,4 +21,29 @@ class TestPub < MiniTest::Test
     assert_equal("Chanter", @pub1.name)
   end
 
+  def test_pub_has_till
+    assert_equal(150, @pub1.how_much_in_till)
+  end
+
+  def test_pub_has_drinks
+    assert_equal(@drinks, @pub1.drinks)
+  end
+
+  def test_remove_drink
+    @pub1.remove_drink(@drink1)
+    assert_equal(2, @pub1.drinks.length)
+  end
+
+  def test_add_money_to_till
+    @pub1.add_money_to_till(10)
+    assert_equal(160, @pub1.how_much_in_till)
+  end
+
+  def test_sell_drink
+    result = @pub1.sell_drink(@drink1)
+    assert_equal(2, @pub1.drinks.length)
+    assert_equal(154, @pub1.how_much_in_till)
+    assert_equal(4, result)
+  end
+
 end
