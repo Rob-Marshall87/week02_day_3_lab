@@ -33,4 +33,12 @@ class Customer
     return @alcohol_level
   end
 
+  def buy_food_from_pub(pub,food)
+    food = pub.sell_food(food)
+    cost = food.price
+    remove_money_from_wallet(cost)
+    rejuvenation = food.how_filling
+    @alcohol_level -= rejuvenation
+  end
+
 end

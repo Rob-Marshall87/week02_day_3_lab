@@ -3,6 +3,7 @@ require("minitest/rg")
 require_relative("../pub")
 require_relative("../drink")
 require_relative("../customer")
+require_relative("../food")
 
 class TestPub < MiniTest::Test
 
@@ -14,7 +15,12 @@ class TestPub < MiniTest::Test
 
     @drinks = [@drink1, @drink2, @drink3]
 
-    @pub1 = Pub.new("Chanter", 150, @drinks)
+    @food1 = Food.new("Burger", 4, 2)
+    @food2 = Food.new("Chips", 2, 1)
+
+    @foods = [@food1, @food2]
+
+    @pub1 = Pub.new("Chanter", 150, @drinks, @foods)
 
 
     @customer1 = Customer.new("Rob", 100, 31)
@@ -60,13 +66,32 @@ class TestPub < MiniTest::Test
   end
 
   def test_sell_drink__customer_drunk
-    @pub1.sell_drink(@drink1, @customer2)
-    @pub1.sell_drink(@drink3, @customer2)
+    @customer2.buy_drink_from_pub(@pub1, @drink1)
+    @customer2.buy_drink_from_pub(@pub1, @drink3)
     assert_equal(7, @customer2.alcohol_level)
-    @pub1.sell_drink(@drink2, @customer2)
+    result = @pub1.sell_drink(@drink2, @customer2)
     assert_equal(1, @pub1.drinks.length)
     assert_equal(157, @pub1.how_much_in_till)
     assert_nil(result)
+  end
+
+  #Advanced Extensions
+
+  def test_has_food
+    assert_equal(@foods, @pub1.foods)
+  end
+
+  def test_remove_food
+    @pub1.remove_food(@food1)
+    assert_equal(1, @pub1.foods.length)
+  end
+
+  def test_sell_food
+    assert_equal(2, @pub1.foods.length)
+    assert_equal(150, @pub1.how_much_in_till)
+    @pub1.sell_food(@food1)
+    assert_equal(1, @pub1.foods.length)
+    assert_equal(154, @pub1.how_much_in_till)
   end
 
 end

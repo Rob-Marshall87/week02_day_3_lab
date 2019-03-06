@@ -1,9 +1,10 @@
 class Pub
-  attr_reader :name, :drinks
-  def initialize(name, till, drinks)
+  attr_reader :name, :drinks, :foods
+  def initialize(name, till, drinks, foods)
     @name = name
     @till = till
     @drinks = drinks
+    @foods = foods
   end
 
   def how_much_in_till
@@ -26,4 +27,16 @@ class Pub
       return drink
     end
   end
+
+  def remove_food(food)
+    @foods.delete(food)
+  end
+
+  def sell_food(food)
+    cost = food.price
+    add_money_to_till(cost)
+    remove_food(food)
+    return food
+  end
+
 end
